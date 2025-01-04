@@ -1,0 +1,81 @@
+
+services:
+  task-list-api-db:
+    container_name: task-list-api-db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskdb
+    ports:
+      - "5435:5432"
+    networks:
+      - task-network
+
+  task-list-api:
+    build:
+      context: ./task-list-api
+    image: task-list-api:1.0
+    ports:
+      - "8089:8089"
+    depends_on:
+      - task-list-api-db
+    networks:
+      - task-network
+
+  task-list-manager-db:
+    container_name: postgres-sql-tlm
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: task_list_manager
+    volumes:
+      - postgres-tlm:/data/postgres
+    ports:
+      - "5436:5432"
+    networks:
+      - task-network
+    restart: unless-stopped
+
+  task-list-manager:
+    build:
+      context: ./task-list-manager
+    image: task-list-manager:1.0
+    ports:
+      - "8088:8088"
+    depends_on:
+      - task-list-manager-db
+      - mail-dev-tlm
+    networks:
+      - task-network
+
+  mail-dev-tlm:
+    container_name: mail-dev-tlm
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - task-network
+
+  task-list-ui:
+    build:
+      context: ./task-list-ui
+    image: task-list-ui:1.0
+    ports:
+      - "3000:3000"
+    depends_on:
+      - task-list-api
+      - task-list-manager
+    networks:
+      - task-network
+
+networks:
+  task-network:
+    driver: bridge
+
+volumes:
+  postgres-tlm:
+    driver: local

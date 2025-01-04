@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://task-list-manager-db:5432/task_list_manager
+    username: postgres
+    password: postgres
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+  mail:
+    host: mail-dev-tlm
+    port: 1025
+    username: cocn
+    password: cocn
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+application:
+  security:
+    jwt:
+      secret-key: e4ce74f96ae57f09d8e4a00b6583c92a9ce8dd3f6894c2bee4d7508b24434a496cd7b5430bb851f75cccad8506ce6a232739a31e5b8efcf0e417cbc4bafe4ab89ea613eb9f2d153b0d50466ca77a40bfb5dee4350bb253799c91d1dd2c015412a0e313caa7d4283bd17e373c76f6a28cffda63827dca777f9add783366c4259b
+      expiration: 86400000
+  mailing:
+    activation:
+      code-length: 6
+    frontend:
+      activation-url: http://localhost:3000/activate-account
+server:
+  port: 8088
+logging:
+  level:
+    root: warn

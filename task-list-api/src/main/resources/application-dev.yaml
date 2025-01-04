@@ -1,0 +1,19 @@
+application:
+  security:
+    jwt:
+      secret-key: e4ce74f96ae57f09d8e4a00b6583c92a9ce8dd3f6894c2bee4d7508b24434a496cd7b5430bb851f75cccad8506ce6a232739a31e5b8efcf0e417cbc4bafe4ab89ea613eb9f2d153b0d50466ca77a40bfb5dee4350bb253799c91d1dd2c015412a0e313caa7d4283bd17e373c76f6a28cffda63827dca777f9add783366c4259b
+spring:
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://task-list-api-db:5432/taskdb
+    password: postgres
+  application:
+    name: todo
+  jpa:
+    hibernate:
+      ddl-auto: update
+  docker:
+    compose:
+      enabled: false
+server:
+  port: 8089
